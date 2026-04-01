@@ -60,6 +60,9 @@ namespace TTSDK.Tool
                 EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
                 
                 CreateBoolean("needCompress", "压缩首包资源");
+                CreateEnumPopup("dataLoadType","首包资源加载方式",new[] {
+                "CDN","Package"},new[]{0,1});
+                CreateInput("dataFileSubPrefix","首包资源加载前缀","首包资源访问路径拼接规则:DATA_CDN + dataFileSubPrefix + datafilename");
                 CreateTextarea("urlCacheList", "缓存资源域名 (?)", "配置的域名下资源会使用缓存\n一个域名占一行\n示例: douyin.com");
                 CreateTextarea("dontCacheFileNames", "不缓存的文件 (?)", "配置的文件名每次都会重新下载，不会缓存\n一个文件名一行，可填写后缀名匹配，不支持通配符。\n示例: json");
 
@@ -231,6 +234,8 @@ namespace TTSDK.Tool
             _editingInputData["CDN"] = ReadProperty<string>(miniGameProperty, "CDN");
             _editingInputData["preloadFiles"] = ReadProperty<string>(miniGameProperty, "preloadFiles");
             _editingInputData["preloadDataListUrl"] = ReadProperty<string>(miniGameProperty, "preloadDataListUrl");
+            _editingEnumData["dataLoadType"] = ReadProperty<int>(miniGameProperty, "dataLoadType");
+            _editingInputData["dataFileSubPrefix"] = ReadProperty<string>(miniGameProperty, "dataFileSubPrefix");
             
             _editingInputData["urlCacheList"] = ReadProperty<string>(miniGameProperty, "urlCacheList");
             _editingInputData["dontCacheFileNames"] = ReadProperty<string>(miniGameProperty, "dontCacheFileNames");
@@ -271,6 +276,8 @@ namespace TTSDK.Tool
             SaveProperty(miniGameProperty, "orientation", _editingEnumData["orientation"]);
 
             SaveProperty(miniGameProperty, "isOldBuildFormat", _editingBooleanData["isOldBuildFormat"]);
+            SaveProperty(miniGameProperty, "dataLoadType", _editingEnumData["dataLoadType"]);
+            SaveProperty(miniGameProperty, "dataFileSubPrefix", _editingInputData["dataFileSubPrefix"]);
             
         }
 

@@ -3,6 +3,8 @@ const unityNamespace = {
       assetBundleFSEnabled: $ASSET_BUNDLEFS_ENABLED,
       assetBundleBufferCapacity: $ASSET_BUNDLE_BUFFER_CAPACITY,
       assetBundleBufferTTL: $ASSET_BUNDLE_BUFFERTTL,
+      // DATA_CDN + dataFileSubPrefix + datafilename
+      dataFileSubPrefix:'$DATA_FILE_SUB_PREFIX',
       optimizeWebGLMemoryInBackground: $OPTIMIZE_WEBGL_MEMORY_INBACKGROUND,
       bootConfig: '$BOOT_CONFIG_INFO',
 	  UnityModule: null,

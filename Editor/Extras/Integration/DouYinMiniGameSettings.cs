@@ -22,6 +22,8 @@ namespace TTSDK.Tool
 
 
         [SerializeField] public bool isOldBuildFormat = true;
+        [SerializeField] public DataLoadType dataLoadType = DataLoadType.Package;
+        [SerializeField] public string dataFileSubPrefix = "";
         public DouYinMiniGameSettings(MiniGameSettingsEditor editor) : base(editor)
         {
         }
