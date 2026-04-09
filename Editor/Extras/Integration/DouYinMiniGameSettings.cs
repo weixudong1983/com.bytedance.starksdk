@@ -24,6 +24,28 @@ namespace TTSDK.Tool
         [SerializeField] public bool isOldBuildFormat = true;
         [SerializeField] public DataLoadType dataLoadType = DataLoadType.Package;
         [SerializeField] public string dataFileSubPrefix = "";
+
+        [SerializeField] private string customBackgroundPortraitPath = "";
+        [SerializeField] private string customBackgroundLandscapePath = "";
+
+        /// <summary>
+        /// 自定义竖屏背景图路径
+        /// </summary>
+        public string CustomBackgroundPortraitPath
+        {
+            get => customBackgroundPortraitPath;
+            set => customBackgroundPortraitPath = value;
+        }
+
+        /// <summary>
+        /// 自定义横屏背景图路径
+        /// </summary>
+        public string CustomBackgroundLandscapePath
+        {
+            get => customBackgroundLandscapePath;
+            set => customBackgroundLandscapePath = value;
+        }
+
         public DouYinMiniGameSettings(MiniGameSettingsEditor editor) : base(editor)
         {
         }

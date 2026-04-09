@@ -75,7 +75,10 @@ namespace TTSDK.Tool
                 Debug.LogError("后处理阶段 BuildProfile 不合法");
                 return BuildMiniGameError.InvalidInput;
             }
-            
+
+            // 处理背景图
+            TTBackgroundImageBuildProcessor.ProcessBackgroundImagesAfterBuild(reloadBuildProfile, buildPath);
+
             Debug.Log("构建成功: " + res);
             return BuildMiniGameError.Succeeded;
         }
@@ -137,6 +140,11 @@ namespace TTSDK.Tool
             starkSettings.isOldBuildFormat = settings.isOldBuildFormat;
             starkSettings.dataLoadType = settings.dataLoadType;
             starkSettings.dataFileSubPrefix = settings.dataFileSubPrefix;
+
+            // 同步背景图配置
+            starkSettings.customBackgroundPortraitPath = settings.CustomBackgroundPortraitPath;
+            starkSettings.customBackgroundLandscapePath = settings.CustomBackgroundLandscapePath;
+
             starkSettings.Save();
         }
 

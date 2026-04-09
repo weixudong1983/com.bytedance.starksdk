@@ -100,7 +100,7 @@ function main() {
       },
       // 加载页的素材配置
       materialConfig: {
-        backgroundImage: 'images/background.png',// 背景图片
+        backgroundImage: '$BACKGROUND_IMAGE$', // 背景图片，可通过构建配置自定义
         iconImage: 'images/unity_logo.png', // icon图片，一般不更换
       },
     },

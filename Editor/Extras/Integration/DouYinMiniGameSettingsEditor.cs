@@ -19,6 +19,7 @@ namespace TTSDK.Tool
         private bool _isFoldLaunchOptions = true;
         private bool _isFoldPreloadOptions = true;
         private bool _isFoldCompileOptions = true;
+        private bool _isFoldBackgroundOptions = true;
 
         private static int _textareaHeight = 50;
         private static float _labelWidth = 140;
@@ -119,7 +120,18 @@ namespace TTSDK.Tool
 
                 EditorGUILayout.EndVertical();
             }
-            
+
+            _isFoldBackgroundOptions = EditorGUILayout.Foldout(_isFoldBackgroundOptions, "背景图配置");
+            if (_isFoldBackgroundOptions)
+            {
+                EditorGUILayout.BeginVertical("frameBox", GUILayout.ExpandWidth(true));
+
+                CreateTextureField("customBackgroundPortraitPath", "竖屏背景图", "自定义竖屏启动背景图，留空使用默认图片");
+                CreateTextureField("customBackgroundLandscapePath", "横屏背景图", "自定义横屏启动背景图，留空使用默认图片");
+
+                EditorGUILayout.EndVertical();
+            }
+
         }
 
         /// <summary>
@@ -210,13 +222,52 @@ namespace TTSDK.Tool
         {
             if (!_editingEnumData.TryGetValue(name, out var value))
                 _editingEnumData[name] = value = 0;
-            
+
             GUILayout.BeginHorizontal();
             CreateFieldLabel(label, tooltip);
             _editingEnumData[name] = EditorGUILayout.IntPopup(value, options, values, GUILayout.MaxWidth(_fieldWidth));
             GUILayout.EndHorizontal();
         }
-        
+
+        /// <summary>
+        /// 创建纹理选择控件
+        /// </summary>
+        private void CreateTextureField(string name, string label, string tooltip = null)
+        {
+            Texture2D currentTexture = null;
+            string currentPath = _editingInputData.TryGetValue(name, out var path) ? path : "";
+
+            if (!string.IsNullOrEmpty(currentPath))
+            {
+                currentTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(currentPath);
+            }
+
+            GUILayout.BeginHorizontal();
+            CreateFieldLabel(label, tooltip);
+
+            var newTexture = (Texture2D)EditorGUILayout.ObjectField(
+                currentTexture,
+                typeof(Texture2D),
+                false,
+                GUILayout.MaxWidth(_fieldWidth)
+            );
+
+            if (newTexture != null)
+            {
+                string newPath = AssetDatabase.GetAssetPath(newTexture);
+                if (newPath != currentPath)
+                {
+                    _editingInputData[name] = newPath;
+                }
+            }
+            else if (currentTexture != null && Event.current.type == EventType.DragPerform)
+            {
+                _editingInputData[name] = "";
+            }
+
+            GUILayout.EndHorizontal();
+        }
+
         #endregion
         
         #region Data
@@ -249,7 +300,10 @@ namespace TTSDK.Tool
 
             _editingBooleanData["isOldBuildFormat"] = ReadProperty<bool>(miniGameProperty, "isOldBuildFormat");
 
-            
+            _editingInputData["customBackgroundPortraitPath"] = ReadProperty<string>(miniGameProperty, "customBackgroundPortraitPath");
+            _editingInputData["customBackgroundLandscapePath"] = ReadProperty<string>(miniGameProperty, "customBackgroundLandscapePath");
+
+
         }
         
         /// <summary>
@@ -278,7 +332,10 @@ namespace TTSDK.Tool
             SaveProperty(miniGameProperty, "isOldBuildFormat", _editingBooleanData["isOldBuildFormat"]);
             SaveProperty(miniGameProperty, "dataLoadType", _editingEnumData["dataLoadType"]);
             SaveProperty(miniGameProperty, "dataFileSubPrefix", _editingInputData["dataFileSubPrefix"]);
-            
+
+            SaveProperty(miniGameProperty, "customBackgroundPortraitPath", _editingInputData["customBackgroundPortraitPath"]);
+            SaveProperty(miniGameProperty, "customBackgroundLandscapePath", _editingInputData["customBackgroundLandscapePath"]);
+
         }
 
         /// <summary>
